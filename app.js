@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const authRouter = require('./router/auth');
 
 const app = express();
 app.use(bodyParser.json());
@@ -11,22 +12,8 @@ app.use((req,res,next) =>{
     next();
 });
 
-app.get('/feed',(req,res,next)=>{
-    res.status(200).json({message: 'hello from manjeet singh',title:'Manjeet Singh',content:'This is my personal project'});
-});
+app.use(authRouter);
 
-
-app.post('/posts',(req,res,next)=>{
-    const title = req.body.title;
-    const content =req.body.content;
-    const message = req.body.message;
-    res.status(201).json({
-        _id: new Date().getHours().toString(),
-        message:message,
-        title:title,
-        content:content
-    });
-});
 
 app.listen(3000,()=>{
     console.log('Connected!');
