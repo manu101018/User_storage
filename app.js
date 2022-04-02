@@ -18,7 +18,14 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(authRouter);
+app.use('/auth',authRouter);
+
+app.use((error,req,res,next)=>{
+  const status = error.statuCode || 500;
+  const message = error.message;
+  const data = error.data;
+  res.status(status).json({message: message, data:data});
+});
 
 mongoose
   .connect(process.env.MONGO_DB)

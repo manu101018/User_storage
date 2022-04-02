@@ -4,13 +4,19 @@ const Schema =mongoose.Schema;
 
 const userSchema = new Schema({
     email:{
-        require:true,
-        type:String
+        type:String,
+        require:true
     },
     password:{
         type:String,
         require:true
-    }
+    },
+    products:[
+        {
+        type:Schema.Types.ObjectId,
+        ref:'Product'
+        }
+    ]
 });
 
 module.exports = mongoose.model("User", userSchema);
