@@ -1,21 +1,23 @@
-exports.getLogin = (req, res, next) => {
-  res
-    .status(200)
-    .json({
-      message: "Hello from Manjeet Singh",
-      title: "Logged In",
-      content: "You have Logged In",
-    });
+const User = require("../model/user");
+
+exports.getSignup = (req, res, next) => {
+  res.status(200).json({
+    message: "Hello from Manjeet Singh",
+    email: "Enter E-mail",
+    password: "Enter Password",
+  });
 };
 
-exports.postLogin = (req, res, next) => {
-  const title = req.body.title;
-  const content = req.body.content;
-  const message = req.body.message;
-  res.status(201).json({
-    _id: new Date().getHours().toString(),
-    message: message,
-    title: title,
-    content: content,
+exports.postSignup = (req, res, next) => {
+  const email = req.body.email;
+  const password = req.body.password;
+  
+  const user = new User({
+    email:email,
+    password:password
   });
+  user.save();
+  res.status(201).json({
+    message:"You have signup successfully!"
+  })
 };
