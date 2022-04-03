@@ -1,12 +1,17 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const fileupload = require('express-fileupload');
 require('dotenv').config();
 
 const authRouter = require("./router/auth");
+const productRouter = require('./router/product');
+const isAuth = require('./is-Auth/is-Auth');
 
 const app = express();
 app.use(bodyParser.json());
+
+app.use(fileupload());
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -19,6 +24,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/auth',authRouter);
+app.use(productRouter);
 
 app.use((error,req,res,next)=>{
   const status = error.statuCode || 500;

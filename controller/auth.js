@@ -12,13 +12,17 @@ exports.signup = (req, res, next) => {
     error.data = errors.array();
     throw error;
   }
-  const email = req.body.email;
+  const firstName = req.body.firstName;
+  const lastName = req.body.lastName;
+  const username = req.body.username;
   const password = req.body.password;
   bcrypt
     .hash(password, 12)
     .then((hashedPw) => {
       const user = new User({
-        email: email,
+        firstName: firstName,
+        lastName: lastName,
+        username: username,
         password: hashedPw,
       });
       return user.save();
@@ -35,10 +39,10 @@ exports.signup = (req, res, next) => {
 };
 
 exports.login = (req, res, next) => {
-  const email = req.body.email;
+  const username = req.body.username;
   const password = req.body.password;
   let loadedUser;
-  User.findOne({ email: email })
+  User.findOne({ username: username })
     .then((user) => {
       if (!user) {
         const error = new Error("User not found");
@@ -56,7 +60,7 @@ exports.login = (req, res, next) => {
       }
       const token = jwt.sign(
         {
-          email: loadedUser.email,
+          username: loadedUser.username,
           userId: loadedUser._id.toString(),
         },
         process.env.MONGO_SECRETKEY,
